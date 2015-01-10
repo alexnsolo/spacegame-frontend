@@ -9,22 +9,22 @@ var socket = new Phoenix.Socket(PewNet.config.socketPath);
 PewNet.requestGame = function(username, callback) {
     socket.join(PewNet.config.channel, "lobby", {username: username}, function(channel) {
 
-        var playerId;
+        var player;
 
         channel.on("player:created", function(message) {
-            playerId = message.id;
+            player = message;
             console.log("player ID = " + playerId);
         });
 
         channel.on("game:created", function(message) {
-            callback(message.id, message.players);
+            callback(message.id, player, message.players);
             channel.leave();
         });
     });
 };
 
-PewNet.joinGame = function(gameId, eventReceiver, callback) {
-    socket.join(PewNet.config.channel, gameId, function(channel) {
+PewNet.joinGame = function(player, gameId, eventReceiver, callback) {
+    socket.join(PewNet.config.channel, gameId, player, function(channel) {
         channel.on("ship:move", function(message) {
             eventReceiver.shipMove(message.shipId, message.coordinates);
         });
