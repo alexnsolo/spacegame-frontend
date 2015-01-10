@@ -110,7 +110,8 @@ gulp.task('convert:coffee', function () {
     };
 
     var stream = gulp.src([SETTINGS.src.scripts + '*.coffee', SETTINGS.src.scripts + '**/*.coffee'])
-       .pipe(plugins.coffee({bare: true}).on('error', showError))
+       .pipe(plugins.plumber(showError))
+       .pipe(plugins.coffee({bare: true}))
        .pipe(gulp.dest(SETTINGS.coffee))
        .pipe(plugins.connect.reload());
     return stream;
