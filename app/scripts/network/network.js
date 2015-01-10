@@ -13,7 +13,7 @@ PewNet.requestGame = function(username, callback) {
 
         channel.on("player:created", function(message) {
             player = message;
-            console.log("player ID = " + playerId);
+            console.log("player ID = " + player.id);
         });
 
         channel.on("game:created", function(message) {

@@ -10,7 +10,7 @@ $(document).ready () ->
             $(".loading-message").show()
             for el in form.get(0).elements
                 el.disabled = "disabled"
-            PewNet.requestGame username, (id, players) ->
+            PewNet.requestGame username, (gameId, player, players) ->
                 game.show()
                 form.hide()
                 window.Game = new Phaser.Game(
@@ -26,3 +26,8 @@ $(document).ready () ->
                             ship = Game.add.sprite(200, 200, 'ship')
                     }
                 )
+                PewNet.joinGame player, gameId, {
+                    shipMove: () ->
+                        console.log arguments
+                }, (messager) ->
+                    window.dg = messager
