@@ -1,13 +1,17 @@
 var socket = new Phoenix.Socket(PewMiddle.config.socketPath);
 
 PewMiddle.requestGame = function(username, callback) {
-    socket.join(PewMiddle.config.channel, "lobby", function(channel) {
-        channel.send("player:game:new", {
-            username: username
+    socket.join(PewMiddle.config.channel, "lobby", {username: username}, function(channel) {
+
+        var playerId;
+
+        channel.on("player:created", function(message) {
+            playerId = message.id;
+            console.log("player ID = " + playerId);
         });
 
-        channel.on("player:game:start", function(message) {
-            callback(message.id, message.ships);
+        channel.on("game:created", function(message) {
+            callback(message.id, message.players);
             channel.leave();
         });
     });
