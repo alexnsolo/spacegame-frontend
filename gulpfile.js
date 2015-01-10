@@ -84,12 +84,12 @@ gulp.task('concat:bower', function () {
 
     var stream = gulp.src(bowerFiles(bowerConfig), {base: SETTINGS.src.bower})
         .pipe(jsFilter)
-        .pipe(plugins.concat('_bower.js'))
+        .pipe(plugins.concat('bower.js'))
         .pipe(gulp.dest(SETTINGS.build.bower))
         .pipe(jsFilter.restore())
         .pipe(cssFilter)
         .pipe(plugins.sass())
-        .pipe(plugins.concat('_bower.css'))
+        .pipe(plugins.concat('bower.css'))
         .pipe(gulp.dest(SETTINGS.build.bower))
         .pipe(cssFilter.restore())
         .pipe(assetsFilter)
@@ -110,7 +110,8 @@ gulp.task('convert:coffee', function () {
     };
 
     var stream = gulp.src([SETTINGS.src.scripts + '*.coffee', SETTINGS.src.scripts + '**/*.coffee'])
-       .pipe(plugins.coffee({bare: true}).on('error', showError))
+       .pipe(plugins.plumber(showError))
+       .pipe(plugins.coffee({bare: true}))
        .pipe(gulp.dest(SETTINGS.coffee))
        .pipe(plugins.connect.reload());
     return stream;
@@ -233,6 +234,7 @@ var cleanFiles = function (files, logMessage) {
 
 gulp.task('clean', function () {
     cleanFiles([SETTINGS.build.app], 'all files');
+    cleanFiles([SETTINGS.coffee], 'coffee tmp');
 });
 
 
