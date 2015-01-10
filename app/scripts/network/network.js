@@ -1,24 +1,30 @@
-var socket = new Phoenix.Socket(PewMiddle.config.socketPath);
+PewNet = {};
+PewNet.config = {
+    socketPath: "ws://kineticstrike.herokuapp.com/ws",
+    channel: "game"
+};
 
-PewMiddle.requestGame = function(username, callback) {
-    socket.join(PewMiddle.config.channel, "lobby", {username: username}, function(channel) {
+var socket = new Phoenix.Socket(PewNet.config.socketPath);
 
-        var playerId;
+PewNet.requestGame = function(username, callback) {
+    socket.join(PewNet.config.channel, "lobby", {username: username}, function(channel) {
+
+        var player;
 
         channel.on("player:created", function(message) {
-            playerId = message.id;
-            console.log("player ID = " + playerId);
+            player = message;
+            console.log("player ID = " + player.id);
         });
 
         channel.on("game:created", function(message) {
-            callback(message.id, message.players);
+            callback(message.id, player, message.players);
             channel.leave();
         });
     });
 };
 
-PewMiddle.joinGame = function(gameId, eventReceiver, callback) {
-    socket.join(PewMiddle.config.channel, gameId, function(channel) {
+PewNet.joinGame = function(player, gameId, eventReceiver, callback) {
+    socket.join(PewNet.config.channel, gameId, player, function(channel) {
         channel.on("ship:move", function(message) {
             eventReceiver.shipMove(message.shipId, message.coordinates);
         });
@@ -30,6 +36,10 @@ PewMiddle.joinGame = function(gameId, eventReceiver, callback) {
         });
         channel.on("ship:destroy", function(message) {
             eventReceiver.shipDestroy(message.shipId);
+        });
+        channel.on("game:end", function(message) {
+            eventReceiver.gameOver(message);
+            channel.leave();
         });
 
         callback({

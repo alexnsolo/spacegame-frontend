@@ -60,7 +60,7 @@ gulp.task('server', function () {
 
     console.log('------------------>>>> firing server  <<<<-----------------------');
     plugins.connect.server(serverConfig);
-    
+
     console.log('Started connect web server on http://localhost:' + serverConfig.port + '.');
     // open('http://localhost:' + serverConfig.port);
 });
@@ -127,7 +127,7 @@ gulp.task('concat:js', ['convert:coffee'], function () {
     };
 
     console.log('-------------------------------------------------- CONCAT :js');
-    gulp.src([SETTINGS.coffee + '*.js', SETTINGS.coffee + '**/*.js', SETTINGS.src.scripts + '*.js', SETTINGS.src.scripts + '**/*.js'])
+    gulp.src([SETTINGS.src.scripts + '*.js', SETTINGS.src.scripts + '**/*.js', SETTINGS.coffee + '*.js', SETTINGS.coffee + '**/*.js'])
         .pipe(plugins.concat('app.js'))
         .pipe(gulp.dest(SETTINGS.build.app))
         .pipe(plugins.connect.reload());
@@ -153,7 +153,7 @@ gulp.task('copy', ['copy:html', 'copy:css', 'copy:images']);
 
 
 gulp.task('copy:html', function () {
-    
+
     console.log('-------------------------------------------------- COPY :html');
     gulp.src(SETTINGS.src.app + '*.html')
         .pipe(plugins.if(isProduction, plugins.minifyHtml({comments: false, quotes: true, spare: true, empty: true, cdata: true})))
@@ -162,7 +162,7 @@ gulp.task('copy:html', function () {
 });
 
 gulp.task('copy:css', function () {
-    
+
     console.log('-------------------------------------------------- COPY :css');
     gulp.src(SETTINGS.src.app + 'app.css')
         .pipe(gulp.dest(SETTINGS.build.app))
@@ -185,13 +185,13 @@ gulp.task('copy:images', function () {
 
     $ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 =========================================================================================================*/
-    
+
 gulp.task('watch', function () {
-    
+
     console.log('watching all the files.....');
 
     var watchedFiles = [];
-    
+
     watchedFiles.push(gulp.watch([SETTINGS.src.scripts + '*.js', SETTINGS.src.scripts + '**/*.js'],  ['concat:js']));
 
     watchedFiles.push(gulp.watch([SETTINGS.src.scripts + '*.coffee', SETTINGS.src.scripts + '**/*.coffee'],  ['concat:js']));
@@ -218,7 +218,7 @@ gulp.task('watch', function () {
     watchedFiles.forEach(function (watchedFile) {
         watchedFile.on('change', onChange);
     });
-    
+
 });
 
 
@@ -250,7 +250,7 @@ gulp.task('zip', function () {
     setTimeout(function () {
         runSequence('clean:zip');
     }, 500); // wait for file creation
-        
+
 });
 
 /*============================================================
@@ -266,7 +266,7 @@ gulp.task('build', function () {
 gulp.task('build:prod', function () {
     console.log(hintLog('-------------------------------------------------- BUILD - Production Mode'));
     isProduction = true;
-    runSequence('copy', 'concat', 'watch');
+    runSequence('copy', 'concat');
 });
 
 gulp.task('default', ['build', 'server']);
