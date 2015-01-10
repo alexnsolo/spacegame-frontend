@@ -1,2 +1,2 @@
 # spacegame-frontend
-it's the FRONT
+stick 'em with the pointy end
