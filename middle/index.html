@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="../bower_components/elixir-phoenix/phoenix.js"></script>
+        <script src="config.js"></script>
+        <script src="interface.js"></script>
+        <script>
+            window.addEventListener("DOMContentLoaded", function() {
+                window.Test = {
+                    join: function() {
+                        console.log("gonna find a game yo");
+                        PewMiddle.requestGame("testdnlfkjnb", function(gameId) {
+                            console.log("oh god I found game " + gameId);
+                        });
+                    }
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <button onclick="Test.join()">Test join</button>
+    </body>
+</html>
