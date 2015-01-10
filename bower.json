@@ -1,0 +1,8 @@
+{
+  "name": "spacegame-frontend",
+  "dependencies": {
+    "elixir-phoenix": "~0.5.1",
+    "phaser": "~2.2.2",
+    "lodash": "~2.4.1"
+  }
+}
