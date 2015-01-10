@@ -266,7 +266,7 @@ gulp.task('build', function () {
 gulp.task('build:prod', function () {
     console.log(hintLog('-------------------------------------------------- BUILD - Production Mode'));
     isProduction = true;
-    runSequence('copy', 'concat', 'watch');
+    runSequence('copy', 'concat');
 });
 
 gulp.task('default', ['build', 'server']);
