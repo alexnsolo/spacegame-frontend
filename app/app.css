@@ -1,4 +1,10 @@
-#game {
+body {
 	background-color: black;
-	color: white;
+}
+
+#game {
+	width: 800px;
+	height: 600px;
+	margin: 20px auto;
+	box-shadow: 0 0 10px lime;
 }
