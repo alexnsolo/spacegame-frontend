@@ -1,4 +1,6 @@
 class HexGrid
+    tiles: []
+    
     constructor: (sizeX, sizeY) ->
         for x in [0..sizeX]
             for y in [0..sizeY]
@@ -6,4 +8,6 @@ class HexGrid
                     tile = new HexTile(x, y)
                     @tiles.push(tile)
 
-    tiles: []
+
+    findTileByCoords: (x, y) ->
+        _.find tiles, (tile) -> tile.x is x and tile.y is y

@@ -13,6 +13,7 @@ $(document).ready () ->
             PewNet.requestGame username, (gameId, player, players) ->
                 game.show()
                 form.hide()
+
                 window.Game = new Phaser.Game(
                     800, 600, Phaser.AUTO, 'game'
                     {
@@ -26,11 +27,34 @@ $(document).ready () ->
                             Game.load.image('explosion', 'images/explosion.png')
 
                         create: () ->
-                            grid = new HexGrid(10, 10)
+                            hexGrid = new HexGrid(10, 10)
+
+                            ship1 = new Ship(1, hexGrid.tiles[7])
+                            ship2 = new Ship(2, hexGrid.tiles[23])
+
+                            ship1.targetShip(ship2)
+                            ship2.targetShip(ship1)
+
+                            setTimeout () =>
+                                ship1.moveToTile(hexGrid.tiles[8])
+                            , 3000
+
+                            setTimeout () =>
+                                ship2.moveToTile(hexGrid.tiles[22])
+                            , 2000
+
+                            PewNet.joinGame player, gameId, {
+                                shipCreate: (ship) ->
+                                    console.log 'server: shipCreate', arguments
+                                    tile = hexGrid.findTileByCoords(ship.x, ship.y)
+                                    console.log 'no tile! fuck' unless tile
+                                    new Ship(ship.id, tile)
+
+                                shipMove: (id, coordinates) ->
+                                    console.log 'server: shipMove', arguments
+
+                            }, (messager) ->
+                                window.dg = messager
                     }
                 )
-                PewNet.joinGame player, gameId, {
-                    shipMove: () ->
-                        console.log arguments
-                }, (messager) ->
-                    window.dg = messager
+                
