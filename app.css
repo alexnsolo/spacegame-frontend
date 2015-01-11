@@ -2,7 +2,7 @@ body {
 	background-color: black;
 	font-family: sans-serif;
 	color: #EEE;
-	background-image: url(/images/space.jpg);
+	background-image: url(images/space.jpg);
 	background-size: cover;
 	background-opacity: 0.5;
 }
