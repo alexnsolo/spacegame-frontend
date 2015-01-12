@@ -1,60 +1,32 @@
-$(document).ready () ->
-    game = $("#game")
-    form = $("#lobbyform")
-    $(".loading-message").hide()
-    game.hide()
-    form.on "submit", (e) ->
-        e.preventDefault()
-        username = form.get(0).username.value
-        if username.length isnt 0
-            $(".loading-message").show()
-            for el in form.get(0).elements
-                el.disabled = "disabled"
-            PewNet.requestGame username, (gameId, player, players) ->
-                game.show()
-                form.hide()
+Game = window.Game = Quintus(imagePath: '/images/').include('Sprites, Scenes, 2D, Input, UI')
 
-                window.Game = new Phaser.Game(
-                    800, 600, Phaser.AUTO, 'game'
-                    {
-                        preload: () ->
-                            Game.load.image('ship-fighter', 'images/ship-fighter.png')
-                            Game.load.image('ship-bomber', 'images/ship-bomber.png')
-                            Game.load.image('ship-carrier', 'images/ship-carrier.png')
-                            Game.load.image('ship-frigate', 'images/ship-frigate.png')
-                            Game.load.image('bullet', 'images/bullet.png')
-                            Game.load.image('hex', 'images/hexagon.png')
-                            Game.load.image('explosion', 'images/explosion.png')
+window.addEventListener 'load', () ->
 
-                        create: () ->
-                            hexGrid = new HexGrid(10, 10)
+    Game.setup 'game', {maximize: true}
+    Game.controls()
 
-                            ship1 = new Ship(1, hexGrid.tiles[7])
-                            ship2 = new Ship(2, hexGrid.tiles[23])
+    Game.scene 'menu', (stage) ->
+        hexGrid = new Game.HexGrid {sizeX: 10, sizeY: 10}
+        stage.insert hexGrid
 
-                            ship1.targetShip(ship2)
-                            ship2.targetShip(ship1)
+        ship = new Game.Ship {tile: hexGrid.p.tiles[19]}
+        stage.insert ship
 
-                            setTimeout () =>
-                                ship1.moveToTile(hexGrid.tiles[8])
-                            , 3000
+        player = new Game.Player()
+        stage.insert player
 
-                            setTimeout () =>
-                                ship2.moveToTile(hexGrid.tiles[22])
-                            , 2000
+        stage.add('viewport').follow(player)
 
-                            PewNet.joinGame player, gameId, {
-                                shipCreate: (ship) ->
-                                    console.log 'server: shipCreate', arguments
-                                    tile = hexGrid.findTileByCoords(ship.x, ship.y)
-                                    console.log 'no tile! fuck' unless tile
-                                    new Ship(ship.id, tile)
+    assets = [
+        'hexagon.png'
+        'nothing.png'
+        'bullet.png'
+        'ship-fighter.png'
+        'ship-bomber.png'
+        'ship-frigate.png'
+        'ship-carrier.png'
+    ]
 
-                                shipMove: (id, coordinates) ->
-                                    console.log 'server: shipMove', arguments
+    Game.load assets, () ->
+        Game.stageScene('menu')
 
-                            }, (messager) ->
-                                window.dg = messager
-                    }
-                )
-                

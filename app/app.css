@@ -1,17 +1,25 @@
 body {
-	background-color: black;
 	font-family: sans-serif;
 	color: #EEE;
+	background-color: black;
+}
+
+.bg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
 	background-image: url(/images/space.jpg);
 	background-size: cover;
-	background-opacity: 0.5;
+	opacity: 0.5;
+	z-index: -1000;
 }
 
 #game {
-	width: 800px;
-	height: 600px;
-	margin: 20px auto;
-	box-shadow: 0 0 10px lime;
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
 .title {
@@ -48,5 +56,6 @@ button {
 }
 
 #lobbyform {
+	display: none;
 	text-align: center;
 }
