@@ -28,7 +28,8 @@ window.addEventListener 'load', () ->
 
     assets = [
         'hexagon.png'
-        'selection.png'
+        'selection-marker.png'
+        'target-marker.png'
         'enemy-marker.png'
         'friendly-marker.png'
         'nothing.png'
