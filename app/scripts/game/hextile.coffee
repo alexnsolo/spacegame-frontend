@@ -22,6 +22,9 @@ Game.Sprite.extend 'HexTile',
 
         @stage.insert coordLabel, @
 
+    acceptsEntity: (entity) ->
+        return @p.entities.length is 0
+
     addEntity: (entity) ->
         return if @hasEntity entity
         @p.entities.push(entity)
