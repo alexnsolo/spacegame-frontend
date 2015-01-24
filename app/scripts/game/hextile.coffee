@@ -11,7 +11,7 @@ Game.Sprite.extend 'HexTile',
 
     touch: () ->
         Game.events.trigger 'hex:clicked', @
-        console.log 'hex clicked', @
+        # console.log 'hex clicked', @
 
     inserted: () ->
         coordLabel = new Game.UI.Text

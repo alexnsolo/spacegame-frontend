@@ -20,4 +20,4 @@ Game.Sprite.extend 'HexGrid',
         _.each @p.tiles, (tile) => @stage.insert tile
 
     findTileByCoords: (x, y) ->
-        _.find @p.tiles, (tile) -> tile.x is x and tile.y is y
+        _.find @p.tiles, (tile) -> tile.p.gridCoordinates.x is x and tile.p.gridCoordinates.y is y

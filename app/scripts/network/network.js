@@ -1,6 +1,7 @@
 PewNet = {};
 PewNet.config = {
-    socketPath: "ws://kineticstrike.herokuapp.com/ws",
+    // socketPath: "ws://kineticstrike.herokuapp.com/ws",
+    socketPath: "ws://localhost:4000/ws",
     channel: "game"
 };
 
@@ -13,7 +14,6 @@ PewNet.requestGame = function(username, callback) {
 
         channel.on("player:created", function(message) {
             player = message;
-            console.log("player ID = " + player.id);
         });
 
         channel.on("game:created", function(message) {
@@ -26,35 +26,35 @@ PewNet.requestGame = function(username, callback) {
 PewNet.joinGame = function(player, gameId, eventReceiver, callback) {
     socket.join(PewNet.config.channel, gameId, player, function(channel) {
         channel.on("ship:move", function(message) {
-            eventReceiver.shipMove(message.shipId, message.coordinates);
+            eventReceiver.shipMoved(message.shipId);
         });
         channel.on("ship:targeted", function(message) {
-            eventReceiver.shipTarget(message.shipId, message.targetShipId);
+            eventReceiver.shipTargeted(message);
         });
         channel.on("ship:create", function(message) {
-            eventReceiver.shipCreate(message.ship);
+            eventReceiver.shipCreated(message);
         });
         channel.on("ship:destroy", function(message) {
-            eventReceiver.shipDestroy(message.shipId);
+            eventReceiver.shipDestroyed(message);
         });
         channel.on("game:end", function(message) {
-            eventReceiver.gameOver(message);
+            eventReceiver.gameEnded(message);
             channel.leave();
         });
 
         callback({
             moveShip: function(id, coordinates) {
-                    channel.send("ship:move", {
-                        shipId: id,
-                        coordinates: coordinates
-                    });
-                },
+                channel.send("ship:move", {
+                    shipId: id,
+                    coordinates: coordinates
+                });
+            },
             targetShip: function(id, targetShipId) {
-                    channel.send("ship:target", {
-                        shipId: id,
-                        targetShipId: targetShipId
-                    });
-                }
+                channel.send("ship:target", {
+                    shipId: id,
+                    targetShipId: targetShipId
+                });
+            }
         });
     });
 };

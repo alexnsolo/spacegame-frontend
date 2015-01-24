@@ -52,10 +52,10 @@ Game.Sprite.extend 'Player',
 
         if @ownsShip ship
             @p.selectedShip = ship
-            console.log 'selecting ship', ship
+            # console.log 'selecting ship', ship
         else
             @p.selectedShip.targetShip ship
-            console.log 'targeting ship', ship
+            # console.log 'targeting ship', ship
             
 
     hexClicked: (tile) ->

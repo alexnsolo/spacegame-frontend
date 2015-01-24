@@ -41,7 +41,7 @@ Game.Sprite.extend 'Ship',
 
     touch: () ->
         Game.events.trigger 'ship:clicked', @
-        console.log 'ship clicked', @
+        # console.log 'ship clicked', @
 
     tileChanged: () ->
         if @p.tile
@@ -63,4 +63,4 @@ Game.Sprite.extend 'Ship',
         @p.target = ship
 
     fireAt: (ship) ->
-        console.log 'firing at ship'
+        # console.log 'firing at ship'

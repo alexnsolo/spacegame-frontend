@@ -45,7 +45,7 @@ var serverConfig = {
     root: SETTINGS.build.app,
     host: 'localhost',
     port: 9000,
-    livereload: true
+    livereload: false
 };
 
 // Flag for generating production code.
