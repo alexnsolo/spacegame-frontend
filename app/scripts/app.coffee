@@ -17,7 +17,7 @@ window.addEventListener 'load', () ->
     Game.preload 'ship-bomber.png'
     Game.preload 'ship-frigate.png'
     Game.preload 'ship-carrier.png'
-    Game.preload -> Game.stageScene('main')
+    Game.preload -> Game.stageScene('simulation')
 
     Game.events = new Game.Evented()
     Game.server = null
@@ -62,16 +62,21 @@ window.addEventListener 'load', () ->
                 hexGrid = new Game.HexGrid {sizeX: 10, sizeY: 10}
                 stage.insert hexGrid
 
-        # player = new Game.Player {id: 1}
-        # stage.insert player
-        # Game.state.set 'player', player
 
-        # ship = new Game.Ship {id: 1, playerId: 1}
-        # ship.moveToTile hexGrid.p.tiles[19]
-        # stage.insert ship
+    Game.scene 'simulation', (stage) ->
+        hexGrid = new Game.HexGrid {sizeX: 10, sizeY: 10}
+        stage.insert hexGrid
 
-        # ship = new Game.Ship {id: 2, playerId: 3}
-        # ship.moveToTile hexGrid.p.tiles[7]
-        # stage.insert ship
+        player = new Game.Player {id: 1}
+        stage.insert player
+        Game.state.set 'player', player
 
-        # stage.add('viewport').follow(player)
+        ship = new Game.Ship {id: 1, playerId: 1}
+        ship.moveToTile hexGrid.p.tiles[19]
+        stage.insert ship
+
+        ship = new Game.Ship {id: 2, playerId: 3}
+        ship.moveToTile hexGrid.p.tiles[7]
+        stage.insert ship
+
+        stage.add('viewport').follow(player)
