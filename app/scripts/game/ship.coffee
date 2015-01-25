@@ -2,17 +2,24 @@ Game.Sprite.extend 'Ship',
     init: (p) ->
         @_super p,
             asset: _.sample ['ship-fighter.png', 'ship-bomber.png', 'ship-frigate.png', 'ship-carrier.png']
-            id: null
+            shipId: null
             playerId: null
-            health: _.sample [50, 76, 100]
+            health: 100
             tile: null
             target: null
             scale: 0.17
+            z: 100
+            collisionMask: Game.SPRITE_DEFAULT
             angle: _.sample [10,382,133,98]
-            alignmentMarker: new Game.Sprite({asset: 'enemy-marker.png'})
+            alignmentMarker: new Game.Sprite
+                asset: 'enemy-marker.png'
+                collisionMask: Game.SPRITE_UI
+                z: 1
             healthIndicator: new Game.UI.Text
                 label: '0'
                 color: 'rgb(0,255,0)'
+                collisionMask: Game.SPRITE_UI
+                z: 1
             weaponsCooldown: _.sample [1.2, 2.3, 3.4]
             _weaponsCooldownLeft: 0
 
@@ -40,8 +47,8 @@ Game.Sprite.extend 'Ship',
         @stage.insert @p.healthIndicator
 
     touch: () ->
-        Game.events.trigger 'ship:clicked', @
-        # console.log 'ship clicked', @
+        console.log 'ship clicked', @
+        # Game.events.trigger 'ship:clicked', @
 
     tileChanged: () ->
         if @p.tile

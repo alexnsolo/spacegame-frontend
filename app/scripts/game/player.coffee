@@ -2,13 +2,20 @@ Game.Sprite.extend 'Player',
     init: (p) ->
         @_super p,
             asset: 'nothing.png'
-            id: null
+            playerId: null
             x: 500
             y: 250
+            collisionMask: Game.SPRITE_UI
             cameraSpeed: 175
             selectedShip: null
-            selectionMarker: new Game.Sprite({asset: 'selection-marker.png', hidden: true})
-            targetMarker: new Game.Sprite({asset: 'target-marker.png', hidden: true})
+            selectionMarker: new Game.Sprite
+                asset: 'selection-marker.png'
+                hidden: true
+                z: 1
+            targetMarker: new Game.Sprite
+                asset: 'target-marker.png'
+                hidden: true
+                z: 1
 
         @on 'inserted'
         Game.events.on 'ship:clicked', @, 'shipClicked'
@@ -16,8 +23,8 @@ Game.Sprite.extend 'Player',
 
 
     inserted: () ->
-        @stage.insert @p.selectionMarker
-        @stage.insert @p.targetMarker
+        @stage.insert @p.selectionMarker, @
+        @stage.insert @p.targetMarker, @
 
     step: (delta) ->
         if Game.inputs['up'] 
@@ -52,10 +59,10 @@ Game.Sprite.extend 'Player',
 
         if @ownsShip ship
             @p.selectedShip = ship
-            # console.log 'selecting ship', ship
-        else
+            console.log 'selecting ship', ship
+        else if @p.selectedShip
             @p.selectedShip.targetShip ship
-            # console.log 'targeting ship', ship
+            console.log 'targeting ship', ship
             
 
     hexClicked: (tile) ->
@@ -67,5 +74,5 @@ Game.Sprite.extend 'Player',
         @p.selectedShip = ship
 
     ownsShip: (ship) ->
-        ship.p.playerId is @p.id
+        ship.p.playerId is @p.playerId
 

@@ -4,6 +4,7 @@ Game.Sprite.extend 'HexGrid',
             sizeX: 10
             sizeY: 10
             tiles: []
+            z: 1
 
         for x in [0..@p.sizeX]
             for y in [0..@p.sizeY]
@@ -17,7 +18,7 @@ Game.Sprite.extend 'HexGrid',
         @on 'inserted'
 
     inserted: () ->
-        _.each @p.tiles, (tile) => @stage.insert tile
+        _.each @p.tiles, (tile) => @stage.insert tile, @
 
     findTileByCoords: (x, y) ->
         _.find @p.tiles, (tile) -> tile.p.gridCoordinates.x is x and tile.p.gridCoordinates.y is y
