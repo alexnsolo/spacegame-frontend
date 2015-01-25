@@ -2,7 +2,7 @@ Game.Sprite.extend 'Ship',
     init: (p) ->
         @_super p,
             asset: _.sample ['ship-fighter.png', 'ship-bomber.png', 'ship-frigate.png', 'ship-carrier.png']
-            id: null
+            shipId: null
             playerId: null
             health: _.sample [50, 76, 100]
             tile: null
@@ -41,7 +41,7 @@ Game.Sprite.extend 'Ship',
 
     touch: () ->
         Game.events.trigger 'ship:clicked', @
-        # console.log 'ship clicked', @
+        console.log 'ship clicked', @
 
     tileChanged: () ->
         if @p.tile

@@ -2,7 +2,7 @@ Game.Sprite.extend 'Player',
     init: (p) ->
         @_super p,
             asset: 'nothing.png'
-            id: null
+            playerId: null
             x: 500
             y: 250
             cameraSpeed: 175
@@ -67,5 +67,5 @@ Game.Sprite.extend 'Player',
         @p.selectedShip = ship
 
     ownsShip: (ship) ->
-        ship.p.playerId is @p.id
+        ship.p.playerId is @p.playerId
 
